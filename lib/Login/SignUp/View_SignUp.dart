@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Control_SignUp.dart';
+import 'control_signup.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -10,6 +10,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   late SignUpController _controller;
+  String? _selectedArea;
 
   @override
   void initState() {
@@ -42,7 +43,23 @@ class _SignUpPageState extends State<SignUpPage> {
                 "계정을 생성해주세요!",
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const SizedBox(height: 35),
+              const SizedBox(height: 20),
+              Text(
+                "어떤 영역에 속하시나요?",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildToggleButton("아이", "child"),
+                  const SizedBox(width: 20),
+                  _buildToggleButton("부모", "parent"),
+                  const SizedBox(width: 20),
+                  _buildToggleButton("교육 관계자", "educator"),
+                ],
+              ),
+              const SizedBox(height: 30),
               _buildTextField(
                 controller: _controller.controllerUsername,
                 labelText: "이름",
@@ -209,5 +226,34 @@ class _SignUpPageState extends State<SignUpPage> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Widget _buildToggleButton(String text, String area) {
+    final bool isSelected = _selectedArea == area;
+
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _selectedArea = area;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: isSelected ? Colors.deepOrangeAccent : Colors.grey,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: isSelected ? Colors.deepOrangeAccent : Colors.black,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
   }
 }
