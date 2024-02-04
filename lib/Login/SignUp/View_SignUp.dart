@@ -45,7 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               const SizedBox(height: 20),
               Text(
-                "어떤 영역에 속하시나요?",
+                "어떤 유형에 속하시나요?",
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 10),
