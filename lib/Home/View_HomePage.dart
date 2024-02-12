@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../utils/appbar.dart';
+import 'view_friendstate.dart';
+import 'view_bottomsheet.dart';
 
 //유저 유형
 enum UserType { parent, educator, student }
@@ -124,32 +126,29 @@ class UserListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: AssetImage(
-            'assets/images/happy.png'), // 사용자의 프로필 이미지 나중에 객체로 받아와서 넣어줄 것
+        backgroundImage: AssetImage('assets/images/happy.png'),
       ),
       title: Text(user.name),
       subtitle: Text(user.message),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // 이미지 버튼
           IconButton(
-            icon: Icon(Icons.content_paste), // 버튼에 들어갈 이미지 경로 넣어줘야됨
+            icon: Icon(Icons.content_paste),
             onPressed: () {
-              // 클릭 이벤트 비워둠
+              // 클릭 이벤트
             },
           ),
-          // 인버트 모어 아이콘 버튼
           IconButton(
-            icon: Icon(Icons.more_vert), // 인버트 모어 아이콘
+            icon: Icon(Icons.more_vert),
             onPressed: () {
-              // 클릭 이벤트 비워둠
+              // 클릭 이벤트
             },
           ),
         ],
       ),
       onTap: () {
-        // 사용자 클릭 시 이벤트
+        ProfileBottomSheet.showProfileBottomSheet(context, user);
       },
     );
   }

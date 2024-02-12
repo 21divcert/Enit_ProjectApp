@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   void handleSearchIconPressed() {
@@ -6,7 +7,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   void handleAddFriendIconPressed() {
-    // 친구 추가 아이콘 클릭 시 수행할 동작
+    // get.to(() => )
   }
   @override
   Widget build(BuildContext context) {
