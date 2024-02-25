@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/control_signup.dart';
 
-class newSignUpPage extends StatelessWidget {
+class SignUpPage extends StatelessWidget {
   final SignUpController _controller = Get.put(SignUpController());
 
   @override

@@ -8,7 +8,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'app/Board/view/view_boardpage.dart';
 import 'app/Grasspage/view_grasspage.dart';
 import 'app/Home/view_homepage.dart';
-import 'app/Login/Login/view_loginpage.dart';
+import 'app/Login/Login/view/view_loginpage.dart';
 import 'app/utils/tabs.dart';
 import 'firebase_options.dart';
 import 'package/debug_console.dart';
