@@ -17,7 +17,7 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  ///파이어베이스 연동
+  //파이어베이스 연동
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   enableDebug();
@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       initialBinding: BindingsBuilder(
         () async {
-          // 초기화 하면서 서비스를 가져온다.
           Get.put(AuthService());
           Get.put(ServerAPIService());
         },

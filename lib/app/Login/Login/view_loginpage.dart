@@ -3,6 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import '../../utils/tabs.dart';
 import '../SignUp/view/view_signup.dart';
+import '../SignUp/view/view_signup.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -131,7 +132,7 @@ class __FormContentState extends State<_FormContent> {
       onTap: () {
         // 회원가입 페이지로 라우팅원
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context, MaterialPageRoute(builder: (context) => newSignUpPage()));
       },
       child: const Text(
         '회원가입이 필요하신가요?',
