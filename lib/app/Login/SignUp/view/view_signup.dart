@@ -1,22 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../controller/control_signup.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
-
-  @override
-  State<SignUpPage> createState() => _SignUpPageState();
-}
-
-class _SignUpPageState extends State<SignUpPage> {
-  late SignUpController _controller;
-  String? _selectedArea;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = SignUpController();
-  }
+class newSignUpPage extends StatelessWidget {
+  final SignUpController _controller = Get.put(SignUpController());
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +39,11 @@ class _SignUpPageState extends State<SignUpPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildToggleButton("아이", "child"),
+                  _buildToggleButton(context, "아이", "STUDENT"),
                   const SizedBox(width: 20),
-                  _buildToggleButton("부모", "parent"),
+                  _buildToggleButton(context, "부모", "PARENT"),
                   const SizedBox(width: 20),
-                  _buildToggleButton("교육 관계자", "educator"),
+                  _buildToggleButton(context, "교육 관계자", "TEACHER"),
                 ],
               ),
               const SizedBox(height: 30),
@@ -68,7 +55,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   if (value == null || value.isEmpty) {
                     return "이름이 비었어요!";
                   }
-                  // Add more validation logic if needed
                   return null;
                 },
                 onEditingComplete: () =>
@@ -104,18 +90,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 controller: _controller.controllerConfirmPassword,
                 focusNode: _controller.focusNodeConfirmPassword,
                 labelText: "비밀번호 확인",
-                validator: (String? value) {
+                validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "비밀번호를 입력해주세요.";
                   } else if (value != _controller.controllerPassword.text) {
                     return "비밀번호가 일치하지 않습니다.";
-                  } else if (!SignUpController().isPasswordValid(value)) {
+                  } else if (!_controller.isPasswordValid(value)) {
                     return "비밀번호 형식이 맞지 않아요!";
                   }
                   return null;
-                },
-                onEditingComplete: () {
-                  // 다음 필드로 포커스 이동 또는 폼 제출 등의 로직
                 },
               ),
               const SizedBox(height: 50),
@@ -129,7 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 onPressed: () {
                   if (_controller.validateForm()) {
-                    _controller.registerUser(context);
+                    _controller.userJoin();
                   }
                 },
                 child: const Text(
@@ -138,7 +121,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                  ), // 텍스트 색상을 흰색으로 설정
+                  ),
                 ),
               ),
               Row(
@@ -158,6 +141,34 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  Widget _buildToggleButton(BuildContext context, String text, String area) {
+    return Obx(() {
+      final bool isSelected = _controller.selectedArea.value == area;
+      return InkWell(
+        onTap: () {
+          _controller.selectedArea.value = area;
+        },
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: isSelected ? Colors.deepOrangeAccent : Colors.grey,
+              width: 2,
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: isSelected ? Colors.deepOrangeAccent : Colors.black,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
   Widget _buildTextField({
     required TextEditingController controller,
     FocusNode? focusNode,
@@ -175,9 +186,6 @@ class _SignUpPageState extends State<SignUpPage> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
       ),
       validator: validator,
       onEditingComplete: onEditingComplete,
@@ -191,69 +199,29 @@ class _SignUpPageState extends State<SignUpPage> {
     String? Function(String?)? validator,
     VoidCallback? onEditingComplete,
   }) {
-    return TextFormField(
-      controller: controller,
-      focusNode: focusNode,
-      obscureText: _controller.obscurePassword,
-      decoration: InputDecoration(
-        labelText: labelText,
-        prefixIcon: const Icon(Icons.password_outlined),
-        suffixIcon: IconButton(
-          onPressed: () {
-            setState(() {
-              _controller.togglePasswordVisibility();
-            });
-          },
-          icon: Icon(
-            _controller.obscurePassword
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined,
+    return Obx(() => TextFormField(
+          controller: controller,
+          focusNode: focusNode,
+          obscureText: _controller.obscurePassword.value,
+          decoration: InputDecoration(
+            labelText: labelText,
+            prefixIcon: const Icon(Icons.password_outlined),
+            suffixIcon: IconButton(
+              icon: Icon(
+                _controller.obscurePassword.value
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+              ),
+              onPressed: () {
+                _controller.obscurePassword.toggle();
+              },
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      validator: validator,
-      onEditingComplete: onEditingComplete,
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  Widget _buildToggleButton(String text, String area) {
-    final bool isSelected = _selectedArea == area;
-
-    return InkWell(
-      onTap: () {
-        setState(() {
-          _selectedArea = area;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: isSelected ? Colors.deepOrangeAccent : Colors.grey,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.deepOrangeAccent : Colors.black,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
-      ),
-    );
+          validator: validator,
+          onEditingComplete: onEditingComplete,
+        ));
   }
 }
