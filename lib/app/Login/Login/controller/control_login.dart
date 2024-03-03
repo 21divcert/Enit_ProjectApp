@@ -1,5 +1,7 @@
+import 'package:enit_project_app/app/Board/view/view_boardpage.dart';
 import 'package:enit_project_app/app/Home/view_homepage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_boardview/boardview.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -20,7 +22,7 @@ class LoginController extends GetxController {
   //   super.onInit();
   // }
 
-  final RxBool isPasswordVisible = false.obs; // 비밀번호 가시성 상태
+  final RxBool isPasswordVisible = true.obs; // 비밀번호 가시성 상태
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value; // 상태 토글
@@ -35,7 +37,7 @@ class LoginController extends GetxController {
     final loginStatus = await AuthService.to.logInWithEmailAndPassword(
         email: idTextControl.text, password: pwTextControl.text);
     if (loginStatus == LoginStatus.success) {
-      Get.to(HomePage());
+      Get.to(BoardPage());
       //, binding: HomePageBinding());
       return;
     }
