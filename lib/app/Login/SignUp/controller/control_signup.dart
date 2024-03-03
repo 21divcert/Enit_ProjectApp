@@ -90,7 +90,7 @@ class SignUpController extends GetxController {
         passwordRepeat: textFieldValues['pw_repeat'] ?? "");
     switch (status) {
       case JoinStatus.success:
-        snackString = "가입을 환영합니다, testuser 님!";
+        snackString = "가입을 환영합니다," + controllerUsername.toString() + "님!";
         break;
       case JoinStatus.weakPassword:
         snackString = "비밀번호가 서버에게 패배하였습니다... 더 강력한 비밀번호가 필요합니다!";
