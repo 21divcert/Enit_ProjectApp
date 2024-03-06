@@ -9,6 +9,7 @@ import 'app/Board/view/view_boardpage.dart';
 import 'app/Grasspage/view_grasspage.dart';
 import 'app/Home/view_homepage.dart';
 import 'app/Login/Login/view/view_loginpage.dart';
+import 'app/Root/RootPage.dart';
 import 'app/utils/tabs.dart';
 import 'firebase_options.dart';
 import 'package/debug_console.dart';
@@ -27,8 +28,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final NavigationController navigationController = Get.find();
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -47,15 +46,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/grass', page: () => GrassPage()),
       ],
       initialRoute: '/login',
-      home: Obx(() => IndexedStack(
-            index: navigationController.tabIndex.value,
-            children: [
-              LoginPage(),
-              HomePage(),
-              BoardPage(),
-              GrassPage(),
-            ],
-          )),
+      home: RootPage(),
     );
   }
 }

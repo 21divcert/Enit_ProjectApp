@@ -1,5 +1,7 @@
 import 'package:enit_project_app/app/Board/view/view_boardpage.dart';
 import 'package:enit_project_app/app/Home/view_homepage.dart';
+import 'package:enit_project_app/app/Root/RootPage.dart';
+import 'package:enit_project_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_boardview/boardview.dart';
 import 'package:get/get.dart';
@@ -37,7 +39,7 @@ class LoginController extends GetxController {
     final loginStatus = await AuthService.to.logInWithEmailAndPassword(
         email: idTextControl.text, password: pwTextControl.text);
     if (loginStatus == LoginStatus.success) {
-      Get.to(BoardPage());
+      Get.to(RootPage());
       //, binding: HomePageBinding());
       return;
     }
