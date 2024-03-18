@@ -1,7 +1,9 @@
+import 'package:enit_project_app/app/Home/controller/control_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:molten_navigationbar_flutter/molten_navigationbar_flutter.dart';
-import '../Home/view_homepage.dart';
+import '../Home/binding/binding_homepage.dart';
+import '../Home/view/view_homepage.dart';
 import '../Board/view/view_boardpage.dart';
 import '../Grasspage/view_grasspage.dart';
 

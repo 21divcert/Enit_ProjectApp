@@ -1,14 +1,13 @@
-import 'package:enit_project_app/app/Board/view/view_boardpage.dart';
-import 'package:enit_project_app/app/Home/view_homepage.dart';
+import 'package:enit_project_app/app/Home/binding/binding_homepage.dart';
 import 'package:enit_project_app/app/Root/RootPage.dart';
-import 'package:enit_project_app/main.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_boardview/boardview.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-
 import '../../../../service/auth_service.dart';
+import '../../../Home/controller/control_homepage.dart';
+import '../../../Model/UserModel/medel_user.dart';
+import '../../../utils/tabs.dart';
 
 class LoginController extends GetxController {
   static LoginController get to => Get.find();
@@ -39,8 +38,7 @@ class LoginController extends GetxController {
     final loginStatus = await AuthService.to.logInWithEmailAndPassword(
         email: idTextControl.text, password: pwTextControl.text);
     if (loginStatus == LoginStatus.success) {
-      Get.to(RootPage());
-      //, binding: HomePageBinding());
+      Get.to(() => RootPage(), binding: HomePageBinding());
       return;
     }
 

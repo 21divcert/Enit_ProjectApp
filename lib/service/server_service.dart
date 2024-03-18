@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import "package:http/http.dart" as http;
+import '../app/Model/UserModel/medel_user.dart';
 import '../package/debug_console.dart';
 
 class ServerAPIService {
@@ -47,5 +48,38 @@ class ServerAPIService {
     http.Response res =
         await http.delete(Uri.parse(host + url), headers: headers);
     return json.decode(utf8.decode(res.bodyBytes));
+  }
+
+  Future<void> fetchUserData() async {
+    await firebaseTokenAdd(); // Firebase 토큰 추가
+
+    // 내 정보 가져오기
+    String meUID = FirebaseAuth.instance.currentUser!.uid ?? "";
+    dynamic meData = await get("/debug/users/$meUID");
+    print("My 데이터: $meData");
+
+    // 유저 리스트 정보 가져오기
+    dynamic userListData = await get("/debug/users");
+    print("User List 데이터: $userListData"); // JSON 데이터 출력
+    List<Users> userList = [];
+    for (var userData in userListData) {
+      userList.add(parseUserData(userData));
+    }
+
+    // JSON 데이터를 Users 객체로 파싱
+    Users me = parseUserData(meData);
+
+    // UserVOController에서 userVO를 가져와서 값을 설정
+    UserVOController userVOController = Get.find<UserVOController>();
+    userVOController.userVO.value = UserVO(me: me, userList: userList);
+  }
+
+  // JSON 데이터를 Users 객체로 파싱하는 메서드
+  Users parseUserData(dynamic userData) {
+    return Users(
+      name: userData['name'],
+      email: userData['email'],
+      role: userData['role'],
+    );
   }
 }
