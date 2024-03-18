@@ -7,8 +7,9 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'app/Board/view/view_boardpage.dart';
 import 'app/Grasspage/view_grasspage.dart';
-import 'app/Home/view_homepage.dart';
+import 'app/Home/view/view_homepage.dart';
 import 'app/Login/Login/view/view_loginpage.dart';
+import 'app/Root/RootPage.dart';
 import 'app/utils/tabs.dart';
 import 'firebase_options.dart';
 import 'package/debug_console.dart';
@@ -22,13 +23,10 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   enableDebug();
 
-  Get.put(NavigationController());
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final NavigationController navigationController = Get.find();
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -47,15 +45,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/grass', page: () => GrassPage()),
       ],
       initialRoute: '/login',
-      home: Obx(() => IndexedStack(
-            index: navigationController.tabIndex.value,
-            children: [
-              LoginPage(),
-              HomePage(),
-              BoardPage(),
-              GrassPage(),
-            ],
-          )),
+      home: RootPage(),
     );
   }
 }

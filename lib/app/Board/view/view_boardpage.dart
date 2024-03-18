@@ -5,7 +5,8 @@ import 'package:flutter_boardview/boardview_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:enit_project_app/app/Board/controller/control_board.dart';
+
+import '../controller/control_board.dart';
 
 class BoardPage extends StatelessWidget {
   final BoardController boardController = Get.put(BoardController());
@@ -17,9 +18,11 @@ class BoardPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 30), // 높이가 30인 사이즈 박스
+          SizedBox(height: 50),
           TableCalendarWidget(),
-          Expanded(child: BoardWidget()), // 보드 위젯 추가
+          BoardAddButton(),
+          Expanded(child: BoardWidget()),
+          SizedBox(height: 100),
         ],
       ),
     );
@@ -51,6 +54,80 @@ class TableCalendarWidget extends StatelessWidget {
   }
 }
 
+class BoardAddButton extends StatelessWidget {
+  final BoardController boardController = Get.find<BoardController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        _showAddBoardDialog(context);
+      },
+      child: Text('Add Board'),
+    );
+  }
+
+  Future<void> _showAddBoardDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Add Board'),
+          content: Column(
+            children: [
+              TextField(
+                onChanged: (value) {
+                  boardController.boardTitle.value = value;
+                },
+                decoration: InputDecoration(labelText: 'Title'),
+              ),
+              TextField(
+                onChanged: (value) {
+                  boardController.boardDay.value = value;
+                },
+                decoration: InputDecoration(labelText: 'Day'),
+              ),
+              TextField(
+                onChanged: (value) {
+                  boardController.boardStartTime.value = value;
+                },
+                decoration: InputDecoration(labelText: 'Start Time'),
+              ),
+              TextField(
+                onChanged: (value) {
+                  boardController.boardEndTime.value = value;
+                },
+                decoration: InputDecoration(labelText: 'End Time'),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // 입력받은 정보로 보드를 생성
+                boardController.createBoardWithInfo(
+                  boardController.boardTitle.value,
+                  boardController.boardDay.value,
+                  boardController.boardStartTime.value,
+                  boardController.boardEndTime.value,
+                );
+                Navigator.of(context).pop();
+              },
+              child: Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 class BoardWidget extends StatelessWidget {
   final BoardViewController boardViewController = BoardViewController();
 
@@ -62,45 +139,29 @@ class BoardWidget extends StatelessWidget {
       List<BoardList> boardLists = _createBoardLists(boardController);
 
       return BoardView(
-        lists: boardLists,
+        width: 150,
         boardViewController: boardViewController,
       );
     });
   }
 
   List<BoardList> _createBoardLists(BoardController controller) {
-    List<List<String>> itemLists = [
-      controller.dailyItems,
-      controller.specialItems,
-      controller.importantItems,
-      controller.favoriteItems,
-      controller.recordItems,
-    ];
-
-    List<String> listTitles = [
-      "Daily",
-      "Special",
-      "Important",
-      "Favorite",
-      "Record"
-    ];
-
-    return List.generate(itemLists.length, (index) {
-      var itemList = itemLists[index];
+    return List.generate(controller.boardLists.length, (index) {
+      List<String> itemList = controller.boardLists[index].items
+              ?.map((e) => e.item.toString())
+              .toList() ??
+          [];
       List<BoardItem> boardItems = List.generate(
         itemList.length,
         (itemIndex) => BoardItem(item: Text(itemList[itemIndex])),
       );
 
-      // 각 리스트의 마지막 아이템으로 추가 버튼을 포함시킵니다.
       boardItems.add(
         BoardItem(
           item: InkWell(
             onTap: () {
-              // 여기서 아이템 추가 로직을 구현합니다.
-              String newItem =
-                  "${listTitles[index]} Item ${itemList.length + 1}";
-              itemList.add(newItem);
+              String newItem = "Item ${itemList.length + 1}";
+              controller.addItemToBoard(index, newItem);
             },
             child: Container(
               padding: EdgeInsets.all(8),
@@ -111,12 +172,13 @@ class BoardWidget extends StatelessWidget {
         ),
       );
 
-      return BoardList(
-        header: [
-          Text("${listTitles[index]} List", style: TextStyle(fontSize: 20)),
-        ],
-        items: boardItems,
-      );
+      // 사용자로부터 입력받은 값으로 보드 정보 생성
+      // String title = controller.boardLists[index].title;
+      // String day = controller.boardLists[index].day;
+      // String startTime = controller.boardLists[index].startTime;
+      // String endTime = controller.boardLists[index].endTime;
+
+      return BoardList();
     });
   }
 }
