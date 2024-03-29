@@ -40,6 +40,7 @@ dependencies:
   http: ^1.2.0
   table_calendar: ^3.1.0
   flutter_boardview: ^0.2.1
+  day_picker: 2.2.0
 
 
 
@@ -64,6 +65,8 @@ flutter:
     - assets/images/home_background.png
     - assets/images/Board.png
     - assets/images/Grass.png
+    - assets/images/boardback.jpeg
+    - assets/images/BoardPageBackground.png
 
   fonts:
     - family: SKYBORI

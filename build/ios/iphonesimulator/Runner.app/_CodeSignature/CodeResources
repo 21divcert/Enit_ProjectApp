@@ -46,7 +46,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		ze+YAt+OuwCMMS0nUJPFwJVzJjA=
+		Q0Id6CYuWnMhc2bF0QUmGqyHRFA=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -54,15 +54,15 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		TG3s7Cuo7QTtEF35aCBxCmqQvvU=
+		CD1SxYkR1Mdp6yWfQSPpdKLNypI=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<data>
-		OCTibqGVTY8wpFP1ehvTeHDu9FY=
+		y/SiXJ1wAJe1Wfweds+qhLGRdog=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<data>
-		a5GcGTCcZ0Pw3cSviDjWls46rvw=
+		v0HGBuYNbj1pirQ7iujLtqi9L08=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
 		<data>
@@ -70,7 +70,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/NOTICES.Z</key>
 		<data>
-		hZdEvyL/3m0Uiyvi5GAx1NJYMLM=
+		Grdv73lk+NwA4MeUIQ1o4PqvA7M=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/fonts/SKYBORI.ttf</key>
 		<data>
@@ -79,6 +79,10 @@
 		<key>Frameworks/App.framework/flutter_assets/assets/images/Board.png</key>
 		<data>
 		86JlTsEL5GykdsXwpC3Kxdf44eI=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/images/BoardPageBackground.png</key>
+		<data>
+		7HmxqEtYmBfeaIvSv2kJTDiVDcQ=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/Grass.png</key>
 		<data>
@@ -91,6 +95,10 @@
 		<key>Frameworks/App.framework/flutter_assets/assets/images/MyPage_Icon.png</key>
 		<data>
 		x8aABOQtBAngx34/2eiRFmls3YU=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/images/boardback.jpeg</key>
+		<data>
+		czG6Jvtq3eh79DPiLIYdpzjkbsA=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/happy.png</key>
 		<data>
@@ -118,7 +126,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		t+mzIBItUzFnR78UqFggPZ/eFr0=
+		ABsvIks71F5Pcs08ligdiHmMkww=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -421,7 +429,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			psyKReM6aEU47kf3aRpx9zCdb+wDDRk1qr4h/nD+Sck=
+			nPVTz9Bgk5sz3L5gaL80bwAZ4Kx5FkswuummJMMxqzc=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -435,21 +443,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			wQq94lZwGuzPMhoaTHEL+m0z8M2bBUC36/ztKHIWBso=
+			/im1f59PpfFjMWLzHCxadmck9oNUjiHNiQlmPf6WWEk=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SEVi3XBlliYz4d5AxyzHV6/C+pBkfcJ/pc5l6XCObOc=
+			4pshcZ5u6l1O+lPQ2Z5vorzsWlmd+Fh4LloAu6X6PSg=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			sKv19dgDujzIW9hxBP7WdkTsntjL2s+x00yl5rtnSt4=
+			ceUD8heoJhrXxCJJsw6dQ3XwqZRkuo0EPiFPKWsDJ2A=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
@@ -463,7 +471,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			GKHXJ2qIqKBd6MUnDGnoKxGLLF/DnjYSmDWDAFavlmY=
+			qhUOx/3p3KoWnNvIw6ECOCjf4V4zLHl4S1aFDOhXLUo=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/fonts/SKYBORI.ttf</key>
@@ -478,6 +486,13 @@
 			<key>hash2</key>
 			<data>
 			HFni1TVhmQ0osvCd0c8O1pM4eStFRwHnMvu8lSwyfow=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/images/BoardPageBackground.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			MqEIcmTC0YrjceHS1Y7S1C6f21SBQ+x6E/BKgAHRSm8=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/Grass.png</key>
@@ -499,6 +514,13 @@
 			<key>hash2</key>
 			<data>
 			NmX+QkNJk/pfIFYttVbvLIwu7KJP+TQbpYOFuxEqlSo=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/images/boardback.jpeg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			w8iyyytvJkcYXJdzsYG805pU2Jc6580zIcImrNYTTn4=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/happy.png</key>
@@ -547,7 +569,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			NePTaAv3ZmdEc0LemztKS8IbNYENSXaYhfmoTJfnQvo=
+			IVrhEFjyRXzKN3wmwEqELPtJjCM68v4XJPe3B1/QVTM=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
