@@ -114,7 +114,7 @@ class UserListView extends StatelessWidget {
       ),
       onTap: () {
         user.isPanelOpen = !user.isPanelOpen;
-        ProfileBottomSheet.showProfileBottomSheet(context, me);
+        ProfileBottomSheet.showProfileBottomSheet(context, user);
       },
     );
   }
