@@ -7,7 +7,7 @@ class AddBoardController extends GetxController {
   final TextEditingController _boardTitleController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
-  final RxString _selectedCycle = 'Sunday'.obs;
+  final RxString _selectedCycle = '월'.obs;
   final RxList<String> selectedDays = <String>[].obs;
 
   TextEditingController get boardTitleController => _boardTitleController;
@@ -27,15 +27,16 @@ class AddBoardController extends GetxController {
       };
       Get.back(result: boardData);
 
-      saveBoardData();
+      createBoardData();
+      boardTitleController.clear();
+      startTimeController.clear();
+      endTimeController.clear();
     }
   }
 
-  void saveBoardData() async {
-    final BoardVOController controller = Get.put(BoardVOController());
-    final BoardController boardController = Get.put(BoardController());
-
-    final Day selectedDay = _stringToDay(_selectedCycle.value);
+  void createBoardData() async {
+    final BoardVOController controller = Get.find();
+    final String selectedDay = _stringToDay(_selectedCycle.value);
 
     final newBoard = Board(
       id: null,
@@ -49,43 +50,27 @@ class AddBoardController extends GetxController {
       stickers: null,
     );
 
-    controller.boardList.add(newBoard);
+    final formattedBoardData = newBoard.toCreateBoardDto();
 
-    boardController.loadBoard();
-
-    // api 보드 데이터 저장
+    controller.createBoardData(formattedBoardData);
   }
 
-  Day _stringToDay(String value) {
+  String _stringToDay(String value) {
     switch (value) {
-      case 'Sunday':
-        return Day.Sunday;
-      case 'Monday':
-        return Day.Monday;
-      case 'Tuesday':
-        return Day.Tuesday;
-      case 'Wednesday':
-        return Day.Wednesday;
-      case 'Thursday':
-        return Day.Thursday;
-      case 'Friday':
-        return Day.Friday;
-      case 'Saturday':
-        return Day.Saturday;
       case '일':
-        return Day.Sunday;
+        return "SUN";
       case '월':
-        return Day.Monday;
+        return "MON";
       case '화':
-        return Day.Tuesday;
+        return "TUE";
       case '수':
-        return Day.Wednesday;
+        return "WED";
       case '목':
-        return Day.Thursday;
+        return "THU";
       case '금':
-        return Day.Friday;
+        return "FRI";
       case '토':
-        return Day.Saturday;
+        return "SAT";
       default:
         throw ArgumentError('Invalid day: $value');
     }
