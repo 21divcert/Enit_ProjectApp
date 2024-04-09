@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:enit_project_app/app/Board/controller/control_boardpage.dart';
 import 'package:get/get.dart';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import "package:http/http.dart" as http;
+import '../app/Model/BoardModel/model_board.dart';
 import '../app/Model/UserModel/medel_user.dart';
 import '../package/debug_console.dart';
 
@@ -32,16 +34,13 @@ class ServerAPIService {
     // return utf8.decode(res.bodyBytes);
   }
 
-  Future<dynamic> post(String url, Map<String, String> data) async {
-    // debugConsole(json.encode(data));
+  Future<dynamic> post(String url, Map<String, dynamic> data) async {
     http.Response res = await http.post(
       Uri.parse(host + url),
-      body:
-          data, //////// VERY IMPORTANT : DO NOT PASS the map data like json.encode(data) !!!! /////////
+      body: json.encode(data),
       headers: headers,
     );
     return json.decode(utf8.decode(res.bodyBytes));
-    // return utf8.decode(res.bodyBytes);
   }
 
   Future<dynamic> delete(String url) async {
@@ -81,5 +80,45 @@ class ServerAPIService {
       email: userData['email'],
       role: userData['role'],
     );
+  }
+
+  Future<void> fetchBoardData(Map<String, dynamic> requestData) async {
+    await firebaseTokenAdd(); // Firebase 토큰 추가
+
+    String meUID = FirebaseAuth.instance.currentUser!.uid ?? "";
+
+    requestData["ownerFirebaseAuthUID"] = meUID;
+
+    print("fetchBoardData: $requestData");
+    try {
+      dynamic boardListData =
+          await post("/api/users/board-all-get/", requestData);
+      print("Board List 데이터 가져오기: $boardListData"); // JSON 데이터 출력
+    } catch (e) {
+      print("Error fetching board data: $e");
+    }
+  }
+
+  Future<void> createBoardData(Map<String, dynamic> requestData) async {
+    await firebaseTokenAdd(); // Firebase 토큰 추가
+
+    String meUID = FirebaseAuth.instance.currentUser!.uid ?? "";
+
+    BoardController boardController = Get.put(BoardController());
+
+    requestData['ownerFirebaseAuthUID'] = meUID.toString();
+
+    // 보드 리스트 정보 가져오기
+    try {
+      print("Create BoardList : $requestData");
+      dynamic boardListData =
+          await post("/api/users/board-create/", requestData);
+      print("Board List 데이터 만들기: $boardListData"); // JSON 데이터 출력
+      boardController.loadBoard();
+    } catch (e) {
+      print("Error creating board data: $e");
+    }
+
+    // 이후 작업: boardListData를 파싱하여 Board 객체로 변환하여 리스트에 추가하는 등의 작업을 수행해야 합니다.
   }
 }

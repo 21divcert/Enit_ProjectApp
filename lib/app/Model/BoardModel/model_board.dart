@@ -1,13 +1,14 @@
 import 'package:get/get.dart';
+import '../../../service/server_service.dart';
 
 enum Day {
-  Sunday,
-  Monday,
-  Tuesday,
-  Wednesday,
-  Thursday,
-  Friday,
-  Saturday,
+  SUN,
+  MON,
+  TUE,
+  WED,
+  THU,
+  FRI,
+  SAT,
 }
 
 class Board {
@@ -15,7 +16,7 @@ class Board {
   final int? ownerId;
   final String title;
   final String? description;
-  final List<Day> cycle; // 요일을 나타내는 리스트
+  final List<String> cycle; // 요일을 나타내는 리스트
   final String startTime;
   final String endTime;
   final int? authorId;
@@ -32,40 +33,74 @@ class Board {
     this.authorId,
     required this.stickers,
   });
-}
 
-class BoardVOController extends GetxController {
-  final RxList<Board> boardList = <Board>[].obs;
-
-  Future<void> loadBoardData() async {
-    try {
-      // 보드 데이터를 가져오는 로직 추가
-    } catch (e) {
-      print("Error fetching board data: $e");
-    }
+  Map<String, dynamic> toCreateBoardDto() {
+    return {
+      'createBoardDto': {
+        'title': title.toString(),
+        'description': description ?? "".toString(),
+        'cycle': cycle.map((day) => {'day': day}).toList(),
+        'start_time': startTime.toString(),
+        'end_time': endTime.toString(),
+      },
+      'ownerFirebaseAuthUID': "test_value",
+    };
   }
 }
 
 class Sticker {
   final int? id;
   final int boardId;
+  final String emojiUnicode;
   final String title;
   final String description;
-  final int createdAtYear;
-  final int createdAtMonth;
-  final int createdAtDate;
-  final String emojiUnicode;
+  final String startTime;
+  final String endTime;
+  final int? authorId;
   final bool isFinished;
 
   Sticker({
     this.id,
     required this.boardId,
+    required this.emojiUnicode,
     required this.title,
     required this.description,
-    required this.createdAtYear,
-    required this.createdAtMonth,
-    required this.createdAtDate,
-    required this.emojiUnicode,
+    required this.startTime,
+    required this.endTime,
+    required this.authorId,
     required this.isFinished,
   });
+}
+
+class BoardVOController extends GetxController {
+  final RxList<Board> boardList = <Board>[].obs;
+
+  Future<void> loadBoardData(Map<String, dynamic> requestData) async {
+    final formattedRequestData = {
+      "ymd": {
+        "currentYear": requestData['currentYear'],
+        "currentMonth": requestData['currentMonth'],
+        "currentDate": requestData['currentDate'],
+      },
+      "ownerFirebaseAuthUID": "test",
+    };
+
+    try {
+      ServerAPIService serverAPIService = ServerAPIService();
+      serverAPIService.fetchBoardData(formattedRequestData);
+      print("model board start!!!!!!!!!!!!!!!!!!");
+    } catch (e) {
+      print("Error fetching board data: $e");
+    }
+  }
+
+  Future<void> createBoardData(Map<String, dynamic> formattedBoardData) async {
+    try {
+      ServerAPIService serverAPIService = ServerAPIService();
+      await serverAPIService.createBoardData(formattedBoardData);
+      print("model board start!!!!!!!!!!!!!!!!!!");
+    } catch (e) {
+      print("Error fetching board data: $e");
+    }
+  }
 }
