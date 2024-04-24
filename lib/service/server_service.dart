@@ -88,9 +88,12 @@ class ServerAPIService {
   Future<void> fetchBoardData(Map<String, dynamic> requestData) async {
     await firebaseTokenAdd(); // Firebase 토큰 추가
 
+    // -> THIS SECTION SHULD BE COMMENTED because the firebaseUID could be used from grasser section so it shuld not be
+    //    sourced only from FirebaseAuth.instance.currentUser , and from now the requestData already have the ownerFirebaseAuthUID.
+    //
     String meUID = FirebaseAuth.instance.currentUser!.uid ?? "";
-
     requestData["ownerFirebaseAuthUID"] = meUID;
+    // TODO : delete this section
 
     print("fetchBoardData: $requestData");
     try {
@@ -98,6 +101,32 @@ class ServerAPIService {
       print("Board List 데이터 가져오기: $boardListData"); // JSON 데이터 출력
     } catch (e) {
       print("Error fetching board data: $e");
+    }
+  }
+
+  Future<List<int>?> fetchGrassWeekData(Map<String, dynamic> requestData) async {
+    await firebaseTokenAdd(); // Firebase 토큰 추가
+
+    print("fetchGrassWeekData: $requestData");
+    try {
+      dynamic boardListData = await post("/api/boards/stat-by-week/", requestData);
+      print("Board List 데이터 가져오기: $boardListData"); // JSON 데이터 출력
+      return boardListData as List<int>;
+    } catch (e) {
+      print("Error fetching fetchGrassWeekData data: $e");
+    }
+  }
+
+  Future<List<int>?> fetchGrassDayData(Map<String, dynamic> requestData) async {
+    await firebaseTokenAdd(); // Firebase 토큰 추가
+
+    print("fetchGrassDayData: $requestData");
+    try {
+      dynamic boardListData = await post("/api/boards/stat-by-day/", requestData);
+      print("Board List 데이터 가져오기: $boardListData"); // JSON 데이터 출력
+      return boardListData as List<int>;
+    } catch (e) {
+      print("Error fetching fetchGrassWeekData data: $e");
     }
   }
 

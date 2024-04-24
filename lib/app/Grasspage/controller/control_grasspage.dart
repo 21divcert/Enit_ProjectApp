@@ -1,23 +1,44 @@
+import 'package:enit_project_app/app/Model/BoardModel/model_board.dart';
+import 'package:enit_project_app/app/Model/GrassModel/model_grass.dart';
+import 'package:enit_project_app/service/auth_service.dart';
 import 'package:get/get.dart';
 import '../../Model/UserModel/medel_user.dart';
 
 class GrassPageController extends GetxController {
-  late Users me = Users(name: 'aa', email: 'aa', role: 'aa');
-  late List<Users> userList = [];
+  final List<int> grassWeekList = [];
+  final List<int> grassDayList = [];
+  final targetDateTime = DateTime.now();
+  final isWeekGrasser = false;
+
+  final List<String> targetBoardIdList = [];
 
   // init 메서드 추가
-  void init() {
-    GrassloadUserData();
-    update(); // GetX update 호출하여 UI 갱신
+  @override
+  void onInit() {
+    final boardVOController = Get.put(BoardVOController());
+    final grassVOController = Get.put(GrassVOController());
+
+    if (boardVOController.ownerFirebaseAuthUID.value != null) {
+      grassVOController.injectOwnerFirebaseAuthUID(boardVOController.ownerFirebaseAuthUID.value);
+    } else {
+      grassVOController.injectOwnerFirebaseAuthUID(AuthService.to.getCurrentUser()?.uid);
+      boardVOController.injectOwnerFirebaseAuthUID(AuthService.to.getCurrentUser()?.uid);
+    }
+    super.onInit();
+    GrassloadData();
   }
 
-  Future<void> GrassloadUserData() async {
+  Future<void> GrassloadData() async {
     print("Grass loadUserData start");
 
-    UserVOController userVOController = Get.put(UserVOController());
-    await userVOController.loadUserData();
+    // get the all of the board id.
+    
 
-    me = userVOController.userVO.value?.me ?? Users(name: '', email: '', role: '');
+    GrassVOController grassVOController = Get.put(GrassVOController());
+    final ownerUID = grassVOController.ownerFirebaseAuthUID.value;
+    await grassVOController.loadGrassWeekData();
+
+    me = grassVOController.userVO.value?.me ?? Users(name: '', email: '', role: '');
     // userList = userVOController.userVO.value?.userList ?? [];
   }
 }
