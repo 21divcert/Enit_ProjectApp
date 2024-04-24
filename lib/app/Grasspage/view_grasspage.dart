@@ -1,11 +1,8 @@
-import 'package:enit_project_app/app/Grasspage/controller/control_grasspage.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class GrassPage extends StatelessWidget {
-  GrassPage({Key? key}) : super(key: key);
+  const GrassPage({Key? key}) : super(key: key);
 
-  final GrassPageController controller = Get.put(GrassPageController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +20,8 @@ class GrassPage extends StatelessWidget {
         ),
         child: Column(
           children: <Widget>[
-            SizedBox(height: kToolbarHeight + MediaQuery.of(context).padding.top),
+            SizedBox(
+                height: kToolbarHeight + MediaQuery.of(context).padding.top),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ProfilePictureWidget(), // 프로필 사진 및 닉네임 위젯

@@ -74,15 +74,6 @@ class Sticker {
 
 class BoardVOController extends GetxController {
   final RxList<Board> boardList = <Board>[].obs;
-  final ownerFirebaseAuthUID = Rxn<String>();
-
-  void injectOwnerFirebaseAuthUID(String? uid) {
-    ownerFirebaseAuthUID.value = uid;
-  }
-
-  void initializeOwnerFirebaseAuthUID(String uid) {
-    ownerFirebaseAuthUID.value = null;
-  }
 
   Future<void> loadBoardData(Map<String, dynamic> requestData) async {
     final formattedRequestData = {
@@ -91,7 +82,7 @@ class BoardVOController extends GetxController {
         "currentMonth": requestData['currentMonth'],
         "currentDate": requestData['currentDate'],
       },
-      "ownerFirebaseAuthUID": ownerFirebaseAuthUID.value,
+      "ownerFirebaseAuthUID": "test",
     };
 
     try {
