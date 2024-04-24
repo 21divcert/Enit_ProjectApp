@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:get/get.dart';
 import '../../../service/server_service.dart';
 
@@ -111,5 +113,16 @@ class BoardVOController extends GetxController {
     } catch (e) {
       print("Error fetching board data: $e");
     }
+  }
+
+  Future<List<int>> loadBoardIdList() async {
+    final boardList = ServerAPIService.to.post("/api/boards/board-get/", {"firebaseUID": ownerFirebaseAuthUID.value});
+    return (boardList).then((boardList) {
+      final List<int> stringBoardList = [];
+      for (dynamic board in boardList) {
+        stringBoardList.add(int.parse(board["id"].toString()));
+      }
+      return stringBoardList;
+    });
   }
 }

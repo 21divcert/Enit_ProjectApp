@@ -104,27 +104,27 @@ class ServerAPIService {
     }
   }
 
-  Future<List<int>?> fetchGrassWeekData(Map<String, dynamic> requestData) async {
+  Future<List<dynamic>?> fetchGrassWeekData(Map<String, dynamic> requestData) async {
     await firebaseTokenAdd(); // Firebase 토큰 추가
 
     print("fetchGrassWeekData: $requestData");
     try {
-      dynamic boardListData = await post("/api/boards/stat-by-week/", requestData);
-      print("Board List 데이터 가져오기: $boardListData"); // JSON 데이터 출력
-      return boardListData as List<int>;
+      dynamic boardListData = await post("/api/stats/stat-by-week", requestData);
+      print("grassWeekData List 데이터 가져오기: $boardListData"); // JSON 데이터 출력
+      return boardListData as List<dynamic>;
     } catch (e) {
       print("Error fetching fetchGrassWeekData data: $e");
     }
   }
 
-  Future<List<int>?> fetchGrassDayData(Map<String, dynamic> requestData) async {
+  Future<List<dynamic>?> fetchGrassDayData(Map<String, dynamic> requestData) async {
     await firebaseTokenAdd(); // Firebase 토큰 추가
 
     print("fetchGrassDayData: $requestData");
     try {
-      dynamic boardListData = await post("/api/boards/stat-by-day/", requestData);
-      print("Board List 데이터 가져오기: $boardListData"); // JSON 데이터 출력
-      return boardListData as List<int>;
+      dynamic boardListData = await post("/api/stats/stat-by-day", requestData);
+      print("grassDayData List 데이터 가져오기: $boardListData"); // JSON 데이터 출력
+      return boardListData as List<dynamic>;
     } catch (e) {
       print("Error fetching fetchGrassWeekData data: $e");
     }

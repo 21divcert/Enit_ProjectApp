@@ -1,6 +1,7 @@
 import 'package:enit_project_app/app/Grasspage/controller/control_grasspage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 
 class GrassPage extends StatelessWidget {
   GrassPage({Key? key}) : super(key: key);
@@ -11,32 +12,15 @@ class GrassPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          color: Color(0xfff3f7d7), // 배경 색상
           image: DecorationImage(
-            image: AssetImage('assets/images/home_background.png'), // 배경 이미지
-            fit: BoxFit.cover, // 이미지를 컨테이너에 맞게 조절
-            colorFilter: ColorFilter.mode(
-              Colors.white.withOpacity(0.08), // 이미지에 흰색을 8% 불투명도로 오버레이
-              BlendMode.dstATop, // 이미지 위에 색상을 덮음
-            ),
+            image: AssetImage('assets/images/BoardPageBackground.png'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Column(
-          children: <Widget>[
-            SizedBox(height: kToolbarHeight + MediaQuery.of(context).padding.top),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ProfilePictureWidget(), // 프로필 사진 및 닉네임 위젯
-            ),
-            // 3개의 빈 카드 컨테이너
-            for (int i = 0; i < 3; i++)
-              Card(
-                margin: const EdgeInsets.all(16.0),
-                child: Container(
-                  height: 100, // 높이는 원하는대로 조절
-                  // 내부에 더 많은 위젯을 배치할 수 있음
-                ),
-              ),
+          children: [
+            SizedBox(height: 50),
+            TableCalendarWidget(),
           ],
         ),
       ),
@@ -44,45 +28,124 @@ class GrassPage extends StatelessWidget {
   }
 }
 
-class ProfilePictureWidget extends StatelessWidget {
-  const ProfilePictureWidget({Key? key}) : super(key: key);
-
+class TableCalendarWidget extends StatelessWidget {
+  final GrassPageController controller = Get.put(GrassPageController());
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(50),
-          child: Image.asset(
-            'assets/images/happy.png',
-            width: 85,
-            height: 85,
-          ),
-        ),
-        const SizedBox(width: 30),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              '',
-              style: TextStyle(
-                color: Colors.white.withOpacity(.9),
-                fontSize: 15,
-              ),
-            ),
-            Text(
-              '나',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 33,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
+        SizedBox(width: 30),
+        Obx(() => controller.isWeekGrasser.value ? yearCounterSelectMenu() : yearMonthCounterSelectMenu()),
+        SizedBox(width: 30),
       ],
     );
+  }
+
+  Widget yearMonthCounterSelectMenu() {
+    final counter = Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            onPressed: () {
+              final currentDateTime = controller.targetDateTime.value;
+              controller.targetDateTime.value = DateTime(currentDateTime.year, currentDateTime.month - 1);
+            },
+            icon: Icon(Icons.arrow_back_ios_rounded),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          SizedBox(
+            width: 100,
+            child: Center(
+              child: Obx(() => Text(
+                    '${controller.targetDateTime.value.year} .${controller.targetDateTime.value.month}',
+                    style: TextStyle(fontSize: 26),
+                  )),
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          dayWeekToggleButton(),
+          SizedBox(
+            width: 10,
+          ),
+          IconButton(
+            onPressed: () {
+              final currentDateTime = controller.targetDateTime.value;
+              controller.targetDateTime.value = DateTime(currentDateTime.year, currentDateTime.month + 1);
+            },
+            icon: Icon(Icons.arrow_forward_ios_rounded),
+          ),
+        ],
+      ),
+    );
+    return counter;
+  }
+
+  Widget yearCounterSelectMenu() {
+    final counter = Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            onPressed: () {
+              final currentDateTime = controller.targetDateTime.value;
+              controller.targetDateTime.value = DateTime(currentDateTime.year - 1, currentDateTime.month);
+            },
+            icon: Icon(Icons.arrow_back_ios_rounded),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          SizedBox(
+            width: 100,
+            child: Center(
+              child: Obx(() => Text(
+                    '${controller.targetDateTime.value.year}',
+                    style: TextStyle(fontSize: 26),
+                  )),
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          dayWeekToggleButton(),
+          SizedBox(
+            width: 10,
+          ),
+          IconButton(
+            onPressed: () {
+              final currentDateTime = controller.targetDateTime.value;
+              controller.targetDateTime.value = DateTime(currentDateTime.year + 1, currentDateTime.month);
+            },
+            icon: Icon(Icons.arrow_forward_ios_rounded),
+          ),
+        ],
+      ),
+    );
+    return counter;
+  }
+
+  Widget dayWeekToggleButton() {
+    final widget = OutlinedButton(
+      child: Obx(() => (Text("${controller.isWeekGrasser.value ? 'week' : 'day'}", style: TextStyle(fontSize: 16)))),
+      onPressed: toggleAction,
+      style: ButtonStyle(),
+    );
+    return SizedBox(
+      child: widget,
+      width: 100,
+    );
+  }
+
+  void toggleAction() {
+    if (controller.isWeekGrasser.value == true) {
+      controller.isWeekGrasser.value = false;
+    } else {
+      controller.isWeekGrasser.value = true;
+    }
   }
 }

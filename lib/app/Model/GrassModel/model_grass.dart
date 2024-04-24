@@ -4,7 +4,6 @@ import '../../../service/server_service.dart';
 
 class GrassVOController extends GetxController {
   final ownerFirebaseAuthUID = Rxn<String>();
-  final List<int> grasserIntenseList = [];
 
   void injectOwnerFirebaseAuthUID(String? uid) {
     ownerFirebaseAuthUID.value = uid;
@@ -14,7 +13,7 @@ class GrassVOController extends GetxController {
     ownerFirebaseAuthUID.value = null;
   }
 
-  Future<void> loadGrassWeekData(Map<String, dynamic> requestData) async {
+  Future<List<dynamic>?> loadGrassWeekData(Map<String, dynamic> requestData) async {
     final formattedRequestData = {
       "firebaseUID": ownerFirebaseAuthUID.value,
       "year": requestData["year"],
@@ -23,15 +22,14 @@ class GrassVOController extends GetxController {
 
     try {
       ServerAPIService serverAPIService = ServerAPIService();
-      grasserIntenseList.clear();
-      grasserIntenseList.addAll(await serverAPIService.fetchGrassDayData(formattedRequestData) ?? []);
       print("model loadGrassWeekData start!!!!!!!!!!!!!!!!!!");
+      return await serverAPIService.fetchGrassWeekData(formattedRequestData);
     } catch (e) {
       print("Error fetching loadGrassWeekData data: $e");
     }
   }
 
-  Future<void> loadGrassDayData(Map<String, dynamic> requestData) async {
+  Future<List<dynamic>?> loadGrassDayData(Map<String, dynamic> requestData) async {
     final formattedRequestData = {
       "firebaseUID": ownerFirebaseAuthUID.value,
       "year": requestData["year"],
@@ -41,9 +39,8 @@ class GrassVOController extends GetxController {
 
     try {
       ServerAPIService serverAPIService = ServerAPIService();
-      grasserIntenseList.clear();
-      grasserIntenseList.addAll(await serverAPIService.fetchGrassDayData(formattedRequestData) ?? []);
       print("model loadGrassDayData start!!!!!!!!!!!!!!!!!!");
+      return await serverAPIService.fetchGrassDayData(formattedRequestData);
     } catch (e) {
       print("Error fetching loadGrassDayData data: $e");
     }
