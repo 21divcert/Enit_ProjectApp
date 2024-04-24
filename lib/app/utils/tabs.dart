@@ -5,7 +5,7 @@ import 'package:molten_navigationbar_flutter/molten_navigationbar_flutter.dart';
 import '../Home/binding/binding_homepage.dart';
 import '../Home/view/view_homepage.dart';
 import '../Board/view/view_boardpage.dart';
-import '../Grasspage/view_grasspage.dart';
+import '../Grasspage/view/view_grasspage.dart';
 
 class Tabs extends StatelessWidget {
   final NavigationController navigationController = Get.find();

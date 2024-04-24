@@ -6,7 +6,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'app/Board/view/view_boardpage.dart';
-import 'app/Grasspage/view_grasspage.dart';
+import 'app/Grasspage/view/view_grasspage.dart';
 import 'app/Home/view/view_homepage.dart';
 import 'app/Login/Login/view/view_loginpage.dart';
 import 'app/Root/RootPage.dart';
