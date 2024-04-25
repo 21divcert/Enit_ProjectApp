@@ -6,6 +6,7 @@ import 'package:enit_project_app/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import '../../Model/UserModel/medel_user.dart';
 
 class GrassPageController extends GetxController {
@@ -20,7 +21,7 @@ class GrassPageController extends GetxController {
 
   final List<int> targetBoardIdList = [];
 
-  Future<int>? refreshStatue;
+  RxBool isRefreshGrasserComplete = false.obs;
 
   // init 메서드 추가
   @override
@@ -40,9 +41,11 @@ class GrassPageController extends GetxController {
     grasserIntenseList.clear();
   }
 
-
   void grassRefreshData() {
-    refreshStatue = _grassRefreshData();
+    isRefreshGrasserComplete.value = false;
+    _grassRefreshData().whenComplete(() {
+      isRefreshGrasserComplete.value = true;
+    });
   }
 
   Future<int> _grassLoadData() async {
@@ -57,7 +60,7 @@ class GrassPageController extends GetxController {
       return 1;
     } catch (e) {
       return 0;
-    } 
+    }
   }
 
   Future<int> _grassRefreshData() async {
@@ -110,6 +113,6 @@ class GrassPageController extends GetxController {
       return 1;
     } catch (e) {
       return 0;
-    } 
+    }
   }
 }

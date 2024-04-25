@@ -169,25 +169,23 @@ class GrasserWidget extends StatelessWidget {
   final GrassPageController controller = Get.put(GrassPageController());
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: controller.refreshStatue,
-        builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            EasyLoading.dismiss();
-            return Expanded(
-              child: SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(
-                  children: modeGrasserSelect(
-                      controller.grasserIntenseList, controller.isWeekGrasser.value, controller.targetDateTime.value),
-                ),
-              ),
-            );
-          } else {
-            EasyLoading.show();
-            return Center();
-          }
-        }));
+    return Obx(() {
+      if (controller.isRefreshGrasserComplete.value) {
+        EasyLoading.dismiss();
+        return Expanded(
+          child: SingleChildScrollView(
+            controller: ScrollController(),
+            child: Column(
+              children: modeGrasserSelect(
+                  controller.grasserIntenseList, controller.isWeekGrasser.value, controller.targetDateTime.value),
+            ),
+          ),
+        );
+      } else {
+        EasyLoading.show();
+        return Center();
+      }
+    });
   }
 
   List<Widget> modeGrasserSelect(List<List<int>> intenseData, bool isWeekGrasser, DateTime userSelectedDate) {
