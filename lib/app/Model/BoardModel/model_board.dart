@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:get/get.dart';
 import '../../../service/server_service.dart';
 
@@ -74,6 +76,15 @@ class Sticker {
 
 class BoardVOController extends GetxController {
   final RxList<Board> boardList = <Board>[].obs;
+  final ownerFirebaseAuthUID = Rxn<String>();
+
+  void injectOwnerFirebaseAuthUID(String? uid) {
+    ownerFirebaseAuthUID.value = uid;
+  }
+
+  void initializeOwnerFirebaseAuthUID(String uid) {
+    ownerFirebaseAuthUID.value = null;
+  }
 
   Future<void> loadBoardData(Map<String, dynamic> requestData) async {
     final formattedRequestData = {
@@ -82,7 +93,7 @@ class BoardVOController extends GetxController {
         "currentMonth": requestData['currentMonth'],
         "currentDate": requestData['currentDate'],
       },
-      "ownerFirebaseAuthUID": "test",
+      "ownerFirebaseAuthUID": ownerFirebaseAuthUID.value,
     };
 
     try {
@@ -102,5 +113,16 @@ class BoardVOController extends GetxController {
     } catch (e) {
       print("Error fetching board data: $e");
     }
+  }
+
+  Future<List<int>> loadBoardIdList() async {
+    final boardList = ServerAPIService.to.post("/api/boards/board-get/", {"firebaseUID": ownerFirebaseAuthUID.value});
+    return (boardList).then((boardList) {
+      final List<int> stringBoardList = [];
+      for (dynamic board in boardList) {
+        stringBoardList.add(int.parse(board["id"].toString()));
+      }
+      return stringBoardList;
+    });
   }
 }

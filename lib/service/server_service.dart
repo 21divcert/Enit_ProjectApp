@@ -35,17 +35,20 @@ class ServerAPIService {
   }
 
   Future<dynamic> post(String url, Map<String, dynamic> data) async {
+    log("POST ${json.encode(data)}");
+    final postHeader = {'Content-Type': 'application/json'};
+    postHeader.addAll(headers);
+
     http.Response res = await http.post(
       Uri.parse(host + url),
       body: json.encode(data),
-      headers: headers,
+      headers: postHeader,
     );
     return json.decode(utf8.decode(res.bodyBytes));
   }
 
   Future<dynamic> delete(String url) async {
-    http.Response res =
-        await http.delete(Uri.parse(host + url), headers: headers);
+    http.Response res = await http.delete(Uri.parse(host + url), headers: headers);
     return json.decode(utf8.decode(res.bodyBytes));
   }
 
@@ -85,17 +88,45 @@ class ServerAPIService {
   Future<void> fetchBoardData(Map<String, dynamic> requestData) async {
     await firebaseTokenAdd(); // Firebase 토큰 추가
 
+    // -> THIS SECTION SHULD BE COMMENTED because the firebaseUID could be used from grasser section so it shuld not be
+    //    sourced only from FirebaseAuth.instance.currentUser , and from now the requestData already have the ownerFirebaseAuthUID.
+    //
     String meUID = FirebaseAuth.instance.currentUser!.uid ?? "";
-
     requestData["ownerFirebaseAuthUID"] = meUID;
+    // TODO : delete this section
 
     print("fetchBoardData: $requestData");
     try {
-      dynamic boardListData =
-          await post("/api/users/board-all-get/", requestData);
+      dynamic boardListData = await post("/api/boards/board-all-get/", requestData);
       print("Board List 데이터 가져오기: $boardListData"); // JSON 데이터 출력
     } catch (e) {
       print("Error fetching board data: $e");
+    }
+  }
+
+  Future<List<dynamic>?> fetchGrassWeekData(Map<String, dynamic> requestData) async {
+    await firebaseTokenAdd(); // Firebase 토큰 추가
+
+    print("fetchGrassWeekData: $requestData");
+    try {
+      dynamic boardListData = await post("/api/stats/stat-by-week", requestData);
+      print("grassWeekData List 데이터 가져오기: $boardListData"); // JSON 데이터 출력
+      return boardListData as List<dynamic>;
+    } catch (e) {
+      print("Error fetching fetchGrassWeekData data: $e");
+    }
+  }
+
+  Future<List<dynamic>?> fetchGrassDayData(Map<String, dynamic> requestData) async {
+    await firebaseTokenAdd(); // Firebase 토큰 추가
+
+    print("fetchGrassDayData: $requestData");
+    try {
+      dynamic boardListData = await post("/api/stats/stat-by-day", requestData);
+      print("grassDayData List 데이터 가져오기: $boardListData"); // JSON 데이터 출력
+      return boardListData as List<dynamic>;
+    } catch (e) {
+      print("Error fetching fetchGrassWeekData data: $e");
     }
   }
 
@@ -111,8 +142,7 @@ class ServerAPIService {
     // 보드 리스트 정보 가져오기
     try {
       print("Create BoardList : $requestData");
-      dynamic boardListData =
-          await post("/api/users/board-create/", requestData);
+      dynamic boardListData = await post("/api/boards/board-create/", requestData);
       print("Board List 데이터 만들기: $boardListData"); // JSON 데이터 출력
       boardController.loadBoard();
     } catch (e) {

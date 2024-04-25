@@ -1,3 +1,4 @@
+import 'package:enit_project_app/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -17,6 +18,10 @@ class BoardController extends GetxController {
   @override
   void onInit() {
     _pageController = PageController();
+
+    if (boardVOController.ownerFirebaseAuthUID.value == null) {
+      boardVOController.injectOwnerFirebaseAuthUID(AuthService.to.getCurrentUser()?.uid);
+    }
     super.onInit();
   }
 

@@ -12,8 +12,8 @@ import '../../../utils/tabs.dart';
 class LoginController extends GetxController {
   static LoginController get to => Get.find();
 
-  final idTextControl = TextEditingController();
-  final pwTextControl = TextEditingController();
+  final idTextControl = TextEditingController(text: "password@gmail.com");
+  final pwTextControl = TextEditingController(text: "password");
 
   // @override
   // void onInit() {
@@ -30,13 +30,11 @@ class LoginController extends GetxController {
   }
 
   Future<void> fireAuthLogin() async {
-    if (idTextControl.text.isEmpty == true ||
-        pwTextControl.text.isEmpty == true) {
+    if (idTextControl.text.isEmpty == true || pwTextControl.text.isEmpty == true) {
       return;
     }
 
-    final loginStatus = await AuthService.to.logInWithEmailAndPassword(
-        email: idTextControl.text, password: pwTextControl.text);
+    final loginStatus = await AuthService.to.logInWithEmailAndPassword(email: idTextControl.text, password: pwTextControl.text);
     if (loginStatus == LoginStatus.success) {
       Get.to(() => RootPage(), binding: HomePageBinding());
       return;
