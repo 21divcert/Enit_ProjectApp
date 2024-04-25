@@ -42,9 +42,7 @@ class GrassPageController extends GetxController {
 
 
   void grassRefreshData() {
-    if (refreshStatue == null) {
-      refreshStatue = _grassRefreshData();
-    }
+    refreshStatue = _grassRefreshData();
   }
 
   Future<int> _grassLoadData() async {
@@ -112,8 +110,6 @@ class GrassPageController extends GetxController {
       return 1;
     } catch (e) {
       return 0;
-    } finally {
-      refreshStatue = null;
-    }
+    } 
   }
 }

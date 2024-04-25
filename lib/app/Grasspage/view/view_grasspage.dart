@@ -31,39 +31,7 @@ class GrassPage extends StatelessWidget {
       ),
     );
 
-    final promisedScaffold = Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/BoardPageBackground.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          children: [
-            SizedBox(height: 50),
-            TableCalendarWidget(),
-          ],
-        ),
-      ),
-    );
-
-    if (controller.refreshStatue != null) {
-      return FutureBuilder(
-          future: controller.refreshStatue,
-          builder: ((context, snapshot) {
-            if (snapshot.hasData) {
-              EasyLoading.dismiss();
-              return finishedScaffold;
-            } else {
-              EasyLoading.show();
-              return promisedScaffold;
-            }
-          }));
-    } else {
-      EasyLoading.show();
-      return promisedScaffold;
-    }
+    return finishedScaffold;
   }
 }
 
@@ -201,15 +169,25 @@ class GrasserWidget extends StatelessWidget {
   final GrassPageController controller = Get.put(GrassPageController());
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Expanded(
-      child: SingleChildScrollView(
-        controller: ScrollController(),
-        child: Column(
-              children: modeGrasserSelect(
-                  controller.grasserIntenseList, controller.isWeekGrasser.value, controller.targetDateTime.value),
-            ),
-      ),
-    ));
+    return FutureBuilder(
+        future: controller.refreshStatue,
+        builder: ((context, snapshot) {
+          if (snapshot.hasData) {
+            EasyLoading.dismiss();
+            return Expanded(
+              child: SingleChildScrollView(
+                controller: ScrollController(),
+                child: Column(
+                  children: modeGrasserSelect(
+                      controller.grasserIntenseList, controller.isWeekGrasser.value, controller.targetDateTime.value),
+                ),
+              ),
+            );
+          } else {
+            EasyLoading.show();
+            return Center();
+          }
+        }));
   }
 
   List<Widget> modeGrasserSelect(List<List<int>> intenseData, bool isWeekGrasser, DateTime userSelectedDate) {
