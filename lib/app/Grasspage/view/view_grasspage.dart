@@ -193,31 +193,31 @@ class GrasserWidget extends StatelessWidget {
     final List<String> widgetLabelList = [];
     if (isWeekGrasser) {
       // fill the resultWidgetList
-      for (int index = 0; index < controller.indexRange * 2 + 1; index++) {
+      for (int index = 0; index < controller.indexYearRange * 2 + 1; index++) {
         resultWidgetList.add(grasserWeekUnit(intenseData[index], controller.targetBoardIdList.length));
       }
 
       // fill the LabelList
-      for (int monthOffset = -controller.indexRange; monthOffset <= controller.indexRange; monthOffset++) {
-        final targetDateTime = DateTime(userSelectedDate.year, userSelectedDate.month + monthOffset, 1);
+      for (int yearOffset = -controller.indexYearRange; yearOffset <= controller.indexYearRange; yearOffset++) {
+        final targetDateTime = DateTime(userSelectedDate.year + yearOffset);
         widgetLabelList.add("${targetDateTime.year}");
       }
     } else {
       // calculate the day offset.
       final List<int> offsetList = [];
-      for (int monthOffset = -controller.indexRange; monthOffset <= controller.indexRange; monthOffset++) {
+      for (int monthOffset = -controller.indexMonthRange; monthOffset <= controller.indexMonthRange; monthOffset++) {
         final targetDateTime = DateTime(userSelectedDate.year, userSelectedDate.month + monthOffset, 1);
         final offset = targetDateTime.weekday; //  offset 1 means that month starts with monday.
         offsetList.add(offset);
       }
 
       // fill the resultWidgetList
-      for (int index = 0; index < controller.indexRange * 2 + 1; index++) {
+      for (int index = 0; index < controller.indexMonthRange * 2 + 1; index++) {
         resultWidgetList.add(grasserDayUnit(intenseData[index], controller.targetBoardIdList.length, offsetList[index]));
       }
 
       // fill the LabelList
-      for (int monthOffset = -controller.indexRange; monthOffset <= controller.indexRange; monthOffset++) {
+      for (int monthOffset = -controller.indexMonthRange; monthOffset <= controller.indexMonthRange; monthOffset++) {
         final targetDateTime = DateTime(userSelectedDate.year, userSelectedDate.month + monthOffset, 1);
         widgetLabelList.add("${targetDateTime.year} .${targetDateTime.month}");
       }
@@ -319,27 +319,27 @@ class GrasserWidget extends StatelessWidget {
   }
 
   Widget grasserWeekUnit(List<int> unitIntenseList, int totalBoardCount) {
-    final List<Widget> intensedDayUnitList = [];
+    final List<Widget> intensedWeekUnitList = [];
 
     // make the colored cell
     for (int intense in unitIntenseList) {
       final colorRatio = intense / totalBoardCount;
-      final dayUnit = Container(
+      final weekUnit = Container(
         padding: EdgeInsets.all(4),
         margin: EdgeInsets.all(4),
         decoration: BoxDecoration(
             color: Color.lerp(Colors.black12, Colors.green.shade700, colorRatio), borderRadius: BorderRadius.circular(10)),
       );
 
-      intensedDayUnitList.add(dayUnit);
+      intensedWeekUnitList.add(weekUnit);
     }
 
     final List<Widget> rowList = [];
 
-    while (intensedDayUnitList.length > 0) {
+    while (intensedWeekUnitList.length > 0) {
       final List<Widget> rowChildren = [];
       for (int i = 0; i < 4; i++) {
-        final removedWidget = intensedDayUnitList.removeAt(0);
+        final removedWidget = intensedWeekUnitList.removeAt(0);
         final addedWidget = Expanded(child: removedWidget);
         rowChildren.add(addedWidget);
       }

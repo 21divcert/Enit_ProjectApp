@@ -15,7 +15,8 @@ class GrassPageController extends GetxController {
 
   final List<List<int>> grasserIntenseList = [];
 
-  final int indexRange = 3;
+  final int indexMonthRange = 3;
+  final int indexYearRange = 1;
   var targetDateTime = DateTime.now().obs;
   final isWeekGrasser = false.obs;
 
@@ -69,7 +70,7 @@ class GrassPageController extends GetxController {
       if (isWeekGrasser == false) {
         // day-based grasser
         // add +- indexRange-month from current selected month
-        for (int i = -indexRange; i <= indexRange; i++) {
+        for (int i = -indexMonthRange; i <= indexMonthRange; i++) {
           final dayBasedGrasser = await grassVOController.loadGrassDayData({
             "year": targetDateTime.value.year,
             "month": targetDateTime.value.month + i,
@@ -91,8 +92,8 @@ class GrassPageController extends GetxController {
       } else {
         // week-based grasser
         // add +- indexRange-year from current selected month
-        for (int i = -indexRange; i <= indexRange; i++) {
-          final dayBasedGrasser = await grassVOController.loadGrassDayData({
+        for (int i = -indexYearRange; i <= indexYearRange; i++) {
+          final dayBasedGrasser = await grassVOController.loadGrassWeekData({
             "year": targetDateTime.value.year + i,
             "targetBoardIdList": targetBoardIdList,
           });
