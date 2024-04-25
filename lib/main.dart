@@ -2,6 +2,7 @@ import 'package:enit_project_app/service/auth_service.dart';
 import 'package:enit_project_app/service/server_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
       ],
       initialRoute: '/login',
       home: RootPage(),
+      builder: EasyLoading.init(),
     );
   }
 }
