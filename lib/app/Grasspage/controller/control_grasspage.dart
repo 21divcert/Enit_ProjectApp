@@ -22,7 +22,7 @@ class GrassPageController extends GetxController {
 
   final List<int> targetBoardIdList = [];
 
-  RxBool isRefreshGrasserComplete = false.obs;
+  RxBool isRefreshGrasserComplete = true.obs;
 
   // init 메서드 추가
   @override
@@ -42,11 +42,20 @@ class GrassPageController extends GetxController {
     grasserIntenseList.clear();
   }
 
+  /// bool isGrassCanRefresh()
+  /// if refresh trial accepted, return true
+  /// else, return false.
+  bool isGrassCanRefresh() {
+    return isRefreshGrasserComplete.value;
+  }
+
   void grassRefreshData() {
-    isRefreshGrasserComplete.value = false;
-    _grassRefreshData().whenComplete(() {
-      isRefreshGrasserComplete.value = true;
-    });
+    if (isRefreshGrasserComplete.value) {
+      isRefreshGrasserComplete.value = false;
+      _grassRefreshData().whenComplete(() {
+        isRefreshGrasserComplete.value = true;
+      });
+    }
   }
 
   Future<int> _grassLoadData() async {

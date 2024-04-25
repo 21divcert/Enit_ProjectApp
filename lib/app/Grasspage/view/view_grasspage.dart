@@ -48,10 +48,6 @@ class TableCalendarWidget extends StatelessWidget {
     );
   }
 
-  void refreshIntenseData() {
-    controller.grassRefreshData();
-  }
-
   Widget yearMonthCounterSelectMenu() {
     final counter = Center(
       child: Row(
@@ -59,9 +55,12 @@ class TableCalendarWidget extends StatelessWidget {
         children: <Widget>[
           IconButton(
             onPressed: () {
+              if (!controller.isGrassCanRefresh()) {
+                return;
+              }
               final currentDateTime = controller.targetDateTime.value;
               controller.targetDateTime.value = DateTime(currentDateTime.year, currentDateTime.month - 1);
-              refreshIntenseData();
+              controller.grassRefreshData();
             },
             icon: Icon(Icons.arrow_back_ios_rounded),
           ),
@@ -86,9 +85,12 @@ class TableCalendarWidget extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
+              if (!controller.isGrassCanRefresh()) {
+                return;
+              }
               final currentDateTime = controller.targetDateTime.value;
               controller.targetDateTime.value = DateTime(currentDateTime.year, currentDateTime.month + 1);
-              refreshIntenseData();
+              controller.grassRefreshData();
             },
             icon: Icon(Icons.arrow_forward_ios_rounded),
           ),
@@ -105,9 +107,12 @@ class TableCalendarWidget extends StatelessWidget {
         children: <Widget>[
           IconButton(
             onPressed: () {
+              if (!controller.isGrassCanRefresh()) {
+                return;
+              }
               final currentDateTime = controller.targetDateTime.value;
               controller.targetDateTime.value = DateTime(currentDateTime.year - 1, currentDateTime.month);
-              refreshIntenseData();
+              controller.grassRefreshData();
             },
             icon: Icon(Icons.arrow_back_ios_rounded),
           ),
@@ -132,9 +137,12 @@ class TableCalendarWidget extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
+              if (!controller.isGrassCanRefresh()) {
+                return;
+              }
               final currentDateTime = controller.targetDateTime.value;
               controller.targetDateTime.value = DateTime(currentDateTime.year + 1, currentDateTime.month);
-              refreshIntenseData();
+              controller.grassRefreshData();
             },
             icon: Icon(Icons.arrow_forward_ios_rounded),
           ),
@@ -157,11 +165,15 @@ class TableCalendarWidget extends StatelessWidget {
   }
 
   void toggleAction() {
+    if (!controller.isGrassCanRefresh()) {
+      return;
+    }
     if (controller.isWeekGrasser.value == true) {
       controller.isWeekGrasser.value = false;
     } else {
       controller.isWeekGrasser.value = true;
     }
+    controller.grassRefreshData();
   }
 }
 
@@ -286,9 +298,12 @@ class GrasserWidget extends StatelessWidget {
     }
     final List<Widget> rowList = [];
 
-    while (intensedDayUnitList.length > 0) {
+    while (intensedDayUnitList.isNotEmpty) {
       final List<Widget> rowChildren = [];
       for (int i = 0; i < 7; i++) {
+        if (intensedDayUnitList.isEmpty) {
+          break;
+        }
         final removedWidget = intensedDayUnitList.removeAt(0);
         final addedWidget = Expanded(child: removedWidget);
         rowChildren.add(addedWidget);
@@ -323,7 +338,7 @@ class GrasserWidget extends StatelessWidget {
 
     // make the colored cell
     for (int intense in unitIntenseList) {
-      final colorRatio = intense / totalBoardCount;
+      final colorRatio = intense / (totalBoardCount * 7);
       final weekUnit = Container(
         padding: EdgeInsets.all(4),
         margin: EdgeInsets.all(4),
@@ -336,9 +351,12 @@ class GrasserWidget extends StatelessWidget {
 
     final List<Widget> rowList = [];
 
-    while (intensedWeekUnitList.length > 0) {
+    while (intensedWeekUnitList.isNotEmpty) {
       final List<Widget> rowChildren = [];
       for (int i = 0; i < 4; i++) {
+        if (intensedWeekUnitList.isEmpty) {
+          break;
+        }
         final removedWidget = intensedWeekUnitList.removeAt(0);
         final addedWidget = Expanded(child: removedWidget);
         rowChildren.add(addedWidget);
